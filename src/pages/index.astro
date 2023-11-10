@@ -1,18 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import VideoPlayer from '../components/VideoPlayer';
-import VideoTimeline from '../components/VideoTimeline';
+import VideoPlayer from '../components/VideoPlayer.astro';
 ---
 
 <Layout title="Chunk chunk">
 	<main>
 		<h1>Welcome to <span class="text-gradient">Chunkie</span></h1>
-		<VideoPlayer client:load />
+		<VideoPlayer />
 		<p class="instructions">
 			To get started, open the directory <code>src/pages</code> in your project.<br />
 			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
 		</p>
-		<VideoTimeline client:load />
 	</main>
 </Layout>
 
