@@ -87,8 +87,158 @@ export default function VideoTimeline() {
   }, []);
 
   return (
-    <div style={{ display: $videoState.isLoaded ? "block" : "none" }}>
+    <div style={{ visibility: $videoState.isLoaded ? "visible" : "hidden" }}>
       <div className="range_container">
+        <div className="ruler">
+          <ul className="stick-container">
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <ul className="minor-stick-container">
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+                <li className="minor-stick"></li>
+              </ul>
+              <span className="stick-value"></span>
+            </li>
+            <li className="stick">
+              <span className="stick-value"></span>
+            </li>
+          </ul>
+        </div>
         <div className="sliders_control">
           <input
             id="fromSlider"

@@ -14,8 +14,8 @@ export type VideoPlayerState = {
 };
 
 export const videoPlayerState = map<VideoPlayerState>({
-  start: 40,
-  end: 80,
+  start: 132,
+  end: 400,
   isLoaded: false,
   duration: 0,
   chunkDuration: 0,

@@ -1,3 +1,4 @@
+import "./Video.css";
 import * as React from "react";
 import { useStore } from "@nanostores/react";
 import {
@@ -127,7 +128,7 @@ export default function Video() {
   }, [$videoState.isPlaying, $videoState.start]);
 
   return (
-    <>
+    <div className="is-glow">
       {!$videoState.isLoaded && <h2>{"is loading"}</h2>}
 
       <video
@@ -149,6 +150,6 @@ export default function Video() {
           setIsPlaying(isPlaying);
         }}
       />
-    </>
+    </div>
   );
 }
