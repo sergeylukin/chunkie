@@ -1,6 +1,7 @@
 import "./VideoTimeline.css";
 import * as React from "react";
-import { setStart, setEnd } from "../store/VideoPlayerStore";
+import { useStore } from "@nanostores/react";
+import { setStart, setEnd, videoPlayerState } from "../store/VideoPlayerStore";
 
 function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
   const [from, to] = getParsed(fromInput, toInput);
@@ -16,7 +17,7 @@ function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
 function controlToInput(toSlider, fromInput, toInput, controlSlider) {
   const [from, to] = getParsed(fromInput, toInput);
   fillSlider(fromInput, toInput, "transparent", "#ffd227", controlSlider);
-  setToggleAccessible(toInput);
+  setToggleAccessible(toInput, toSlider);
   if (from <= to) {
     toSlider.value = to;
     toInput.value = to;
@@ -39,7 +40,7 @@ function controlFromSlider(fromSlider, toSlider, fromInput) {
 function controlToSlider(fromSlider, toSlider, toInput) {
   const [from, to] = getParsed(fromSlider, toSlider);
   fillSlider(fromSlider, toSlider, "transparent", "#ffd227", toSlider);
-  setToggleAccessible(toSlider);
+  setToggleAccessible(toSlider, toSlider);
   if (from <= to) {
     toSlider.value = to;
     toInput.value = to;
@@ -72,8 +73,7 @@ function fillSlider(from, to, sliderColor, rangeColor, controlSlider) {
   );
 }
 
-function setToggleAccessible(currentTarget) {
-  const toSlider = document.querySelector("#toSlider");
+function setToggleAccessible(currentTarget, toSlider) {
   if (Number(currentTarget.value) <= 0) {
     toSlider.style.zIndex = 2;
   } else {
@@ -82,26 +82,72 @@ function setToggleAccessible(currentTarget) {
 }
 
 export default function VideoTimeline() {
-  // const fromSlider = document.querySelector("#fromSlider");
-  // const toSlider = document.querySelector("#toSlider");
-  // const fromInput = document.querySelector("#fromInput");
-  // const toInput = document.querySelector("#toInput");
-  // fillSlider(fromSlider, toSlider, "transparent", "#ffd227", toSlider);
-  // setToggleAccessible(toSlider);
-  //
-  // fromSlider.oninput = () => controlFromSlider(fromSlider, toSlider, fromInput);
-  // toSlider.oninput = () => controlToSlider(fromSlider, toSlider, toInput);
-  // fromInput.oninput = () =>
-  //   controlFromInput(fromSlider, fromInput, toInput, toSlider);
-  // toInput.oninput = () =>
-  //   controlToInput(toSlider, fromInput, toInput, toSlider);
+  const $videoState = useStore(videoPlayerState);
+  const fromSlider = React.useRef(null);
+  const toSlider = React.useRef(null);
+  const fromInput = React.useRef(null);
+  const toInput = React.useRef(null);
+  React.useEffect(() => {
+    fillSlider(
+      fromSlider.current,
+      toSlider.current,
+      "transparent",
+      "#ffd227",
+      toSlider.current
+    );
+    setToggleAccessible(toSlider.current, toSlider.current);
+    fromInput.current.oninput = () =>
+      controlFromInput(
+        fromSlider.current,
+        fromInput.current,
+        toInput.current,
+        toSlider.current
+      );
+    toInput.current.oninput = () =>
+      controlToInput(
+        toSlider.current,
+        fromInput.current,
+        toInput.current,
+        toSlider.current
+      );
+  }, []);
 
   return (
     <div>
       <div className="range_container">
         <div className="sliders_control">
-          <input id="fromSlider" type="range" value="10" min="0" max="100" />
-          <input id="toSlider" type="range" value="30" min="0" max="100" />
+          <input
+            id="fromSlider"
+            type="range"
+            value={$videoState.start}
+            min="0"
+            max="100"
+            ref={fromSlider}
+            onChange={(e) => {
+              controlFromSlider(
+                fromSlider.current,
+                toSlider.current,
+                fromInput.current
+              );
+              setStart(e.target.value);
+            }}
+          />
+          <input
+            id="toSlider"
+            type="range"
+            value={$videoState.end}
+            min="0"
+            max="100"
+            ref={toSlider}
+            onChange={(e) => {
+              controlToSlider(
+                fromSlider.current,
+                toSlider.current,
+                toInput.current
+              );
+              setEnd(e.target.value);
+            }}
+          />
         </div>
         <div className="form_control">
           <div className="form_control_container">
@@ -110,7 +156,8 @@ export default function VideoTimeline() {
               className="form_control_container__time__input"
               type="number"
               id="fromInput"
-              value="10"
+              ref={fromInput}
+              value={$videoState.start}
               min="0"
               max="100"
             />
@@ -120,8 +167,9 @@ export default function VideoTimeline() {
             <input
               className="form_control_container__time__input"
               type="number"
+              ref={toInput}
               id="toInput"
-              value="30"
+              value={$videoState.end}
               min="0"
               max="100"
             />
