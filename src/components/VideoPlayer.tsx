@@ -1,4 +1,4 @@
-import "./Video.css";
+import "./VideoPlayer.css";
 import * as React from "react";
 import { useStore } from "@nanostores/react";
 import {
@@ -17,27 +17,32 @@ const VideoControls = ({
   onPlayPauseClick,
 }) => (
   <div className="video-controls">
-    {isPlaying ? (
-      <button
-        type="button"
-        className="pause"
-        data-testid="pause-test-id"
-        onClick={() => onPlayPauseClick(false)}
-        aria-label="Pause"
-      >
-        {"Pause"}
-      </button>
-    ) : (
-      <button
-        type="button"
-        className="play"
-        onClick={() => onPlayPauseClick(true)}
-        aria-label="Play"
-      >
-        {"Play"}
-      </button>
-    )}
-    {formatTime(currentTime)} {formatTime(duration)}
+    <div>Sound</div>
+    <div className="video-controls-play">
+      {isPlaying ? (
+        <button
+          type="button"
+          className="pause"
+          data-testid="pause-test-id"
+          onClick={() => onPlayPauseClick(false)}
+          aria-label="Pause"
+        >
+          {"Pause"}
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="play"
+          onClick={() => onPlayPauseClick(true)}
+          aria-label="Play"
+        >
+          {"Play"}
+        </button>
+      )}
+    </div>
+    <div>
+      {formatTime(currentTime)} {formatTime(duration)}
+    </div>
   </div>
 );
 
@@ -56,7 +61,7 @@ function pad(n) {
   return n < 10 ? "0" + n : n;
 }
 
-export default function Video() {
+export default function VideoPlayer() {
   const $videoState = useStore(videoPlayerState);
   console.log($videoState.start);
   console.log($videoState.end);
