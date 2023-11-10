@@ -4,11 +4,11 @@ import VideoTimeline from '../components/VideoTimeline';
 ---
 
 <div class="u-center">
-    <VideoPlayer client:load />
+    <VideoPlayer client:only="react" />
 </div>
-<VideoTimeline client:load />
+<VideoTimeline client:only="react" />
 
-<style>
+<style is:global>
 .u-center {
     display: flex;
     flex-direction: column;

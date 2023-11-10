@@ -1,5 +1,5 @@
-import "./VideoPlayer.css";
 import * as React from "react";
+import "./VideoPlayer.css";
 import { useStore } from "@nanostores/react";
 import {
   videoPlayerState,

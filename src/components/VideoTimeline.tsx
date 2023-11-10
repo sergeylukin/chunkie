@@ -1,5 +1,5 @@
-import "./VideoTimeline.css";
 import * as React from "react";
+import "./VideoTimeline.css";
 import { useStore } from "@nanostores/react";
 import {
   setStart,
