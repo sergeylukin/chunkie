@@ -47,19 +47,127 @@
   }
 }
 
+.player {
+  border-radius: 5px;
+}
 
 .video-controls {
   display: flex;
   justify-content: space-between;
+  padding: 5px 0;
 }
 .video-controls div:nth-child(odd) {
   width: 20%;
   font-size: small;
   margin: auto;
   color: white;
+display: flex;
+padding: 0 0 0 15px;
 }
 .video-controls-play {
   flex-grow: 2;
   text-align: center;
   width: 60%;
+  display: flex;
+justify-content: center;
+align-items: center;
 }
+
+:root {
+    --button-height: 10px;
+    --button-color: #edd;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+}
+
+.play {
+    height: 0;
+    width: 0;
+    margin-left: calc(2 * 0.14 * var(--button-height));
+    /*margin-left: 17px;*/
+    background: none;
+    border: none;
+    border-top: var(--button-height) solid transparent;
+    border-bottom: var(--button-height) solid transparent;
+    border-left: calc(var(--button-height) * 2 * 0.86) solid var(--button-color);
+
+}
+
+.pause {
+    position: relative;
+    background: none;
+    border: none;
+    height: calc(var(--button-height) * 2);
+    width: calc(var(--button-height) * 2 * 0.86);
+    &:before, &:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 33%;
+        background: var(--button-color);
+    }
+    &:before {
+        left: 0;
+    }
+    &:after {
+        right: 0;
+    }
+}
+
+.hidden {
+    display:none;
+}
+
+.speaker {
+border: none;
+  height: 30px;
+  width: 30px;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+background: transparent;
+align-self: start;
+}
+.speaker span {
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: 0px 0 0 0;
+background: white;
+}
+.speaker span:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent #fff transparent transparent;
+  border-width: 10px 14px 10px 15px;
+  left: -13px;
+  top: 5px;
+}
+.speaker span:before {
+  transform: rotate(45deg);
+  border-radius: 0 50px 0 0;
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-style: double;
+  border-color: #fff;
+  border-width: 7px 7px 0 0;
+  left: 18px;
+  top: 9px;
+  transition: all 0.2s ease-out;
+}
+.speaker:hover span:before {
+  transform: scale(0.8) translate(-3px, 0) rotate(42deg);
+}
+.speaker.mute span:before {
+  transform: scale(0.5) translate(-15px, 0) rotate(36deg);
+  opacity: 0;
+

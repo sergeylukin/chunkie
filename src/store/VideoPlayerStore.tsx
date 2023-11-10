@@ -11,6 +11,7 @@ export type VideoPlayerState = {
   chunkProgress: number;
   progress: number;
   isPlaying: boolean;
+  isMute: boolean;
 };
 
 export const videoPlayerState = map<VideoPlayerState>({
@@ -22,6 +23,7 @@ export const videoPlayerState = map<VideoPlayerState>({
   chunkProgress: 0,
   progress: 0,
   isPlaying: false,
+  isMute: false,
 });
 
 type VideoPlayerDisplayInfo = Pick<VideoPlayerState, "start" | "end">;
@@ -48,4 +50,7 @@ export function setChunkDuration(duration: number) {
 }
 export function setChunkProgress(duration: number) {
   videoPlayerState.setKey("chunkProgress", duration);
+}
+export function setIsMute(isMute: boolean) {
+  videoPlayerState.setKey("isMute", isMute);
 }

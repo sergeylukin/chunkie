@@ -8,16 +8,28 @@ import {
   setProgress,
   setChunkProgress,
   setIsPlaying,
+  setIsMute,
 } from "../store/VideoPlayerStore";
 
 const VideoControls = ({
   isPlaying,
+  isMute,
+  onMuteChange,
   duration,
   currentTime,
   onPlayPauseClick,
 }) => (
   <div className="video-controls">
-    <div>Sound</div>
+    <div>
+      <button
+        className={`speaker ${isMute ? "mute" : ""}`}
+        onClick={() => {
+          onMuteChange(!isMute);
+        }}
+      >
+        <span></span>
+      </button>
+    </div>
     <div className="video-controls-play">
       {isPlaying ? (
         <button
@@ -26,18 +38,14 @@ const VideoControls = ({
           data-testid="pause-test-id"
           onClick={() => onPlayPauseClick(false)}
           aria-label="Pause"
-        >
-          {"Pause"}
-        </button>
+        ></button>
       ) : (
         <button
           type="button"
           className="play"
           onClick={() => onPlayPauseClick(true)}
           aria-label="Play"
-        >
-          {"Play"}
-        </button>
+        ></button>
       )}
     </div>
     <div>
@@ -138,9 +146,11 @@ export default function VideoPlayer() {
 
       <video
         controls={false}
+        muted={$videoState.isMute}
         preload={"auto"}
         ref={videoRef}
         width={500}
+        className={"player"}
         style={{ display: $videoState.isLoaded ? "block" : "none" }}
         id="myVideo"
       >
@@ -151,6 +161,10 @@ export default function VideoPlayer() {
         duration={$videoState.chunkDuration}
         currentTime={$videoState.chunkProgress}
         isPlaying={$videoState.isPlaying}
+        isMute={$videoState.isMute}
+        onMuteChange={(isMute) => {
+          setIsMute(isMute);
+        }}
         onPlayPauseClick={(isPlaying) => {
           setIsPlaying(isPlaying);
         }}
