@@ -5,10 +5,16 @@ import {
   setIsLoaded,
   setDuration,
   setProgress,
+  setChunkProgress,
   setIsPlaying,
 } from "../store/VideoPlayerStore";
 
-const VideoControls = ({ isPlaying, onPlayPauseClick }) => (
+const VideoControls = ({
+  isPlaying,
+  duration,
+  currentTime,
+  onPlayPauseClick,
+}) => (
   <div className="video-controls">
     {isPlaying ? (
       <button
@@ -30,8 +36,24 @@ const VideoControls = ({ isPlaying, onPlayPauseClick }) => (
         {"Play"}
       </button>
     )}
+    {formatTime(currentTime)} {formatTime(duration)}
   </div>
 );
+
+function formatTime(time) {
+  if (!time) return "00:00";
+  const mydate = new Date(time * 1000);
+  const hours = mydate.getUTCHours();
+  const minutes = pad(mydate.getUTCMinutes());
+  const seconds = pad(mydate.getUTCSeconds());
+  let humandate = "";
+  if (hours) humandate += `${hours}:`;
+  humandate += minutes + ":" + seconds;
+  return humandate;
+}
+function pad(n) {
+  return n < 10 ? "0" + n : n;
+}
 
 export default function VideoPlayer() {
   const $videoState = useStore(videoPlayerState);
@@ -51,17 +73,22 @@ export default function VideoPlayer() {
   }, []);
   React.useEffect(() => {
     videoRef.current.currentTime = $videoState.start;
+    setProgress(videoRef.current.currentTime);
+    setChunkProgress(0);
   }, [$videoState.start]);
 
   const intervalRef = React.useRef();
   const startTimer = () => {
     clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      if (videoRef.current) {
+        setProgress(videoRef.current.currentTime);
+        setChunkProgress(
+          Math.floor(videoRef.current.currentTime) - $videoState.start
+        );
+      }
+    }, [1000]);
   };
-  intervalRef.current = setInterval(() => {
-    if (videoRef.current) {
-      setProgress(videoRef.current.currentTime);
-    }
-  }, [1000]);
 
   React.useEffect(() => {
     console.log($videoState.progress);
@@ -69,12 +96,18 @@ export default function VideoPlayer() {
 
   React.useEffect(() => {
     // const $videoState = useStore(videoPlayerState);
-    if (parseFloat($videoState.progress) >= parseFloat($videoState.end)) {
+    if (
+      Math.floor(parseFloat($videoState.progress)) >=
+      parseFloat($videoState.end)
+    ) {
       console.log(
         parseFloat($videoState.progress),
         parseFloat($videoState.end)
       );
-      // videoRef.current.pause();
+      // Shameful hack that aligns current position with total duration to
+      // avoid incosistency)
+      setChunkProgress($videoState.chunkDuration);
+      clearInterval(intervalRef.current);
       setIsPlaying(false);
     }
   }, [$videoState.progress, $videoState.end]);
@@ -83,11 +116,15 @@ export default function VideoPlayer() {
     if ($videoState.isPlaying) {
       videoRef.current.play();
       setProgress(videoRef.current.currentTime);
+      setChunkProgress(
+        Math.floor(parseFloat(videoRef.current.currentTime) - $videoState.start)
+      );
       startTimer();
     } else {
+      clearInterval(intervalRef.current);
       videoRef.current.pause();
     }
-  }, [$videoState.isPlaying]);
+  }, [$videoState.isPlaying, $videoState.start]);
 
   return (
     <>
@@ -95,7 +132,7 @@ export default function VideoPlayer() {
       {!$videoState.isLoaded && <h2>{"is loading"}</h2>}
 
       <video
-        controls
+        controls={false}
         preload={"auto"}
         ref={videoRef}
         width={500}
@@ -105,6 +142,8 @@ export default function VideoPlayer() {
       </video>
 
       <VideoControls
+        duration={$videoState.chunkDuration}
+        currentTime={$videoState.chunkProgress}
         isPlaying={$videoState.isPlaying}
         onPlayPauseClick={(isPlaying) => {
           setIsPlaying(isPlaying);

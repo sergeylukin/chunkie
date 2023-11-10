@@ -7,15 +7,19 @@ export type VideoPlayerState = {
   start: number;
   end: number;
   duration: number;
+  chunkDuration: number;
+  chunkProgress: number;
   progress: number;
   isPlaying: boolean;
 };
 
 export const videoPlayerState = map<VideoPlayerState>({
-  start: 0,
-  end: 1,
+  start: 40,
+  end: 80,
   isLoaded: false,
   duration: 0,
+  chunkDuration: 0,
+  chunkProgress: 0,
   progress: 0,
   isPlaying: false,
 });
@@ -38,4 +42,10 @@ export function setProgress(progress: number) {
 }
 export function setIsPlaying(isPlaying: boolean) {
   videoPlayerState.setKey("isPlaying", isPlaying);
+}
+export function setChunkDuration(duration: number) {
+  videoPlayerState.setKey("chunkDuration", duration);
+}
+export function setChunkProgress(duration: number) {
+  videoPlayerState.setKey("chunkProgress", duration);
 }

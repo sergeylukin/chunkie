@@ -1,7 +1,15 @@
 import "./VideoTimeline.css";
 import * as React from "react";
 import { useStore } from "@nanostores/react";
-import { setStart, setEnd, videoPlayerState } from "../store/VideoPlayerStore";
+import {
+  setStart,
+  setEnd,
+  videoPlayerState,
+  setChunkDuration,
+  setProgress,
+  setChunkProgress,
+  setIsPlaying,
+} from "../store/VideoPlayerStore";
 
 function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
   const [from, to] = getParsed(fromInput, toInput);
@@ -110,6 +118,19 @@ export default function VideoTimeline() {
         toInput.current,
         toSlider.current
       );
+
+    // trigger crop area marker redraw, otherwise it doesn't have border
+    // rendered IDK why on earth
+    // shame on me but hey, need to get it done ASAP so will fix later
+    setTimeout(() => {
+      controlFromSlider(
+        fromSlider.current,
+        toSlider.current,
+        fromInput.current
+      );
+      controlToSlider(fromSlider.current, toSlider.current, toInput.current);
+      setChunkDuration(toSlider.current.value);
+    }, 500);
   }, []);
 
   return (
@@ -130,6 +151,8 @@ export default function VideoTimeline() {
                 fromInput.current
               );
               setStart(e.target.value);
+              setChunkProgress(0);
+              setChunkDuration($videoState.end - $videoState.start);
             }}
           />
           <input
@@ -146,6 +169,21 @@ export default function VideoTimeline() {
                 toInput.current
               );
               setEnd(e.target.value);
+              if (
+                $videoState.chunkProgress > 0 &&
+                $videoState.chunkDuration < $videoState.chunkProgress
+              ) {
+                setChunkProgress($videoState.end - $videoState.start);
+                setIsPlaying(false);
+              } else {
+                setChunkDuration($videoState.end - $videoState.start);
+                console.log(
+                  "chung end",
+                  e.target.value,
+                  $videoState.start,
+                  $videoState.end
+                );
+              }
             }}
           />
         </div>
