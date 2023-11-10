@@ -1,15 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Chunkie from '../components/Chunkie.astro';
+import Github from '../components/icons/Github'
 ---
 
 <Layout title="Chunk chunk">
-	<main>
+	<main class="container">
+<a href="https://github.com/sergeylukin/chunkie" class="social-icon">
+<Github />
+</a>
 		<h1>Yo, I'm <span class="text-gradient">Chunkie</span></h1>
 		<Chunkie />
 		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+			To get starter, run <code>git clone https://github.com/sergeylukin/chunkie</code>
 		</p>
 	</main>
 </Layout>
@@ -71,4 +74,11 @@ import Chunkie from '../components/Chunkie.astro';
 		gap: 2rem;
 		padding: 0;
 	}
+
+.social-icon {
+  cursor: pointer;
+position: absolute;
+top: 0;
+right: 0;
+}
 </style>
