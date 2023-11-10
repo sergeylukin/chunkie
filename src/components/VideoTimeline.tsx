@@ -113,7 +113,7 @@ export default function VideoTimeline() {
   }, []);
 
   return (
-    <div>
+    <div style={{ display: $videoState.isLoaded ? "block" : "none" }}>
       <div className="range_container">
         <div className="sliders_control">
           <input
@@ -121,7 +121,7 @@ export default function VideoTimeline() {
             type="range"
             value={$videoState.start}
             min="0"
-            max="100"
+            max={$videoState.duration}
             ref={fromSlider}
             onChange={(e) => {
               controlFromSlider(
@@ -137,7 +137,7 @@ export default function VideoTimeline() {
             type="range"
             value={$videoState.end}
             min="0"
-            max="100"
+            max={$videoState.duration}
             ref={toSlider}
             onChange={(e) => {
               controlToSlider(
@@ -159,7 +159,7 @@ export default function VideoTimeline() {
               ref={fromInput}
               value={$videoState.start}
               min="0"
-              max="100"
+              max={$videoState.duration}
             />
           </div>
           <div className="form_control_container">
@@ -171,26 +171,11 @@ export default function VideoTimeline() {
               id="toInput"
               value={$videoState.end}
               min="0"
-              max="100"
+              max={$videoState.duration}
             />
           </div>
         </div>
       </div>
-      <button
-        onClick={() => {
-          setStart(40);
-          console.log("setting start to 40");
-        }}
-      >
-        {"START"}
-      </button>
-      <button
-        onClick={() => {
-          setEnd(80);
-        }}
-      >
-        {"END"}
-      </button>
     </div>
   );
 }
