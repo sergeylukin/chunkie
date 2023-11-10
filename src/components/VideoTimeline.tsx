@@ -11,49 +11,22 @@ import {
   setIsPlaying,
 } from "../store/VideoPlayerStore";
 
-function controlFromInput(fromSlider, fromInput, toInput, controlSlider) {
-  const [from, to] = getParsed(fromInput, toInput);
-  fillSlider(fromInput, toInput, "transparent", "#ffd227", controlSlider);
-  if (from > to) {
-    fromSlider.value = to;
-    fromInput.value = to;
-  } else {
-    fromSlider.value = from;
-  }
-}
-
-function controlToInput(toSlider, fromInput, toInput, controlSlider) {
-  const [from, to] = getParsed(fromInput, toInput);
-  fillSlider(fromInput, toInput, "transparent", "#ffd227", controlSlider);
-  setToggleAccessible(toInput, toSlider);
-  if (from <= to) {
-    toSlider.value = to;
-    toInput.value = to;
-  } else {
-    toInput.value = from;
-  }
-}
-
-function controlFromSlider(fromSlider, toSlider, fromInput) {
+function controlFromSlider(fromSlider, toSlider) {
   const [from, to] = getParsed(fromSlider, toSlider);
   fillSlider(fromSlider, toSlider, "transparent", "#ffd227", toSlider);
   if (from > to) {
     fromSlider.value = to;
-    fromInput.value = to;
   } else {
-    fromInput.value = from;
   }
 }
 
-function controlToSlider(fromSlider, toSlider, toInput) {
+function controlToSlider(fromSlider, toSlider) {
   const [from, to] = getParsed(fromSlider, toSlider);
   fillSlider(fromSlider, toSlider, "transparent", "#ffd227", toSlider);
   setToggleAccessible(toSlider, toSlider);
   if (from <= to) {
     toSlider.value = to;
-    toInput.value = to;
   } else {
-    toInput.value = from;
     toSlider.value = from;
   }
 }
@@ -93,8 +66,6 @@ export default function VideoTimeline() {
   const $videoState = useStore(videoPlayerState);
   const fromSlider = React.useRef(null);
   const toSlider = React.useRef(null);
-  const fromInput = React.useRef(null);
-  const toInput = React.useRef(null);
   React.useEffect(() => {
     fillSlider(
       fromSlider.current,
@@ -104,33 +75,15 @@ export default function VideoTimeline() {
       toSlider.current
     );
     setToggleAccessible(toSlider.current, toSlider.current);
-    fromInput.current.oninput = () =>
-      controlFromInput(
-        fromSlider.current,
-        fromInput.current,
-        toInput.current,
-        toSlider.current
-      );
-    toInput.current.oninput = () =>
-      controlToInput(
-        toSlider.current,
-        fromInput.current,
-        toInput.current,
-        toSlider.current
-      );
 
     // trigger crop area marker redraw, otherwise it doesn't have border
     // rendered IDK why on earth
     // shame on me but hey, need to get it done ASAP so will fix later
     setTimeout(() => {
-      controlFromSlider(
-        fromSlider.current,
-        toSlider.current,
-        fromInput.current
-      );
-      controlToSlider(fromSlider.current, toSlider.current, toInput.current);
+      controlFromSlider(fromSlider.current, toSlider.current);
+      controlToSlider(fromSlider.current, toSlider.current);
       setChunkDuration(toSlider.current.value);
-    }, 500);
+    }, 1000);
   }, []);
 
   return (
@@ -145,11 +98,7 @@ export default function VideoTimeline() {
             max={$videoState.duration}
             ref={fromSlider}
             onChange={(e) => {
-              controlFromSlider(
-                fromSlider.current,
-                toSlider.current,
-                fromInput.current
-              );
+              controlFromSlider(fromSlider.current, toSlider.current);
               setStart(e.target.value);
               setChunkProgress(0);
               setChunkDuration($videoState.end - $videoState.start);
@@ -163,11 +112,7 @@ export default function VideoTimeline() {
             max={$videoState.duration}
             ref={toSlider}
             onChange={(e) => {
-              controlToSlider(
-                fromSlider.current,
-                toSlider.current,
-                toInput.current
-              );
+              controlToSlider(fromSlider.current, toSlider.current);
               setEnd(e.target.value);
               if (
                 $videoState.chunkProgress > 0 &&
@@ -186,32 +131,6 @@ export default function VideoTimeline() {
               }
             }}
           />
-        </div>
-        <div className="form_control">
-          <div className="form_control_container">
-            <div className="form_control_container__time">Min</div>
-            <input
-              className="form_control_container__time__input"
-              type="number"
-              id="fromInput"
-              ref={fromInput}
-              value={$videoState.start}
-              min="0"
-              max={$videoState.duration}
-            />
-          </div>
-          <div className="form_control_container">
-            <div className="form_control_container__time">Max</div>
-            <input
-              className="form_control_container__time__input"
-              type="number"
-              ref={toInput}
-              id="toInput"
-              value={$videoState.end}
-              min="0"
-              max={$videoState.duration}
-            />
-          </div>
         </div>
       </div>
     </div>

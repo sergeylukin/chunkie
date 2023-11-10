@@ -1,7 +1,19 @@
 ---
-import VideoPlayer from '../components/VideoPlayer';
+import Video from '../components/Video';
 import VideoTimeline from '../components/VideoTimeline';
 ---
 
-<VideoPlayer client:load />
+<div class="u-center">
+    <Video client:load />
+</div>
 <VideoTimeline client:load />
+
+<style>
+.u-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+</style>

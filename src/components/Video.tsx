@@ -55,7 +55,7 @@ function pad(n) {
   return n < 10 ? "0" + n : n;
 }
 
-export default function VideoPlayer() {
+export default function Video() {
   const $videoState = useStore(videoPlayerState);
   console.log($videoState.start);
   console.log($videoState.end);
@@ -128,7 +128,6 @@ export default function VideoPlayer() {
 
   return (
     <>
-      <h1>{"Video"}</h1>
       {!$videoState.isLoaded && <h2>{"is loading"}</h2>}
 
       <video
@@ -137,6 +136,7 @@ export default function VideoPlayer() {
         ref={videoRef}
         width={500}
         style={{ display: $videoState.isLoaded ? "block" : "none" }}
+        id="myVideo"
       >
         <source src={videoSrc} type="video/mp4" />
       </video>
@@ -149,15 +149,6 @@ export default function VideoPlayer() {
           setIsPlaying(isPlaying);
         }}
       />
-
-      <button
-        onClick={() => {
-          console.log($videoState.start);
-          console.log($videoState.end);
-        }}
-      >
-        {"CHECK"}
-      </button>
     </>
   );
 }
